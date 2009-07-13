@@ -1,0 +1,17 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  dvd_id: 1
+  torrent: MyText
+  link: MyText
+  size: MyText
+  category: MyText
+  pubdate: MyText
+
+two:
+  dvd_id: 1
+  torrent: MyText
+  link: MyText
+  size: MyText
+  category: MyText
+  pubdate: MyText

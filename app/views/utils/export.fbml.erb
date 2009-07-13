@@ -1,0 +1,17 @@
+<% unless @export_url.nil? %>
+  <div align="center">
+    <h1>Export your DVD Listings in an Excel file. </h1>
+    Note: If you are using Firefox, please make sure that you save your file with .xls extension.
+    <br/>
+    <br/>
+
+    <a href="<%=@export_url%>">
+      Export my listings<br/>
+      <%= image_tag("save_36x36.png", {:title => 'Export my listings', :alt => 'Export my listings'}) %>
+    </a>
+  </div>
+<% else %>
+  <div align='center'>
+  <h2>You don't have any listings to export.</h2>
+  </div>
+<%end%>

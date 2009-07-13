@@ -1,0 +1,68 @@
+<div align="center">
+  <h1>Editing my DVD listing</h1><br/>
+
+  <% unless @listing.blank? %>
+    <% dvd = Dvd.find(@listing.dvd_id.to_s)  %>
+    <table width="500px">
+    <tr><td>
+        <div align="center"><h4><%= dvd.title%></h4></div>
+    </td></tr>
+    <tr>
+      <td>
+        <div align="center"><img src="<%= dvd.medium_image %>"></div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div align="center">
+          <h3>Description:<br/></h3>
+          <%= dvd.description%>
+        </div>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <div align="center">
+          <% if (dvd.torrents.size > 0)  %>
+            <%= link_to image_tag("torrent_36x36.png" , {:title => 'Torrent listings', :alt => 'Torrent listings'}) + "Torrents",
+              show_dvd_torrent_url(dvd.id) %>
+            </a>
+          <% end %>
+          &nbsp;&nbsp;&nbsp;
+          <% if !dvd.vod.nil? %>
+            <%= link_to image_tag("vod_36x36.png" , {:title => 'Video on Demand', :alt => 'Video on Demand'}) + "Video on Demand",
+              dvd.vod, :target=>"_blank" %>
+            </a>
+          <% end %>
+          <% if !dvd.theatrical_release_date.nil?
+            d = dvd.theatrical_release_date.split("-")
+            date = d[0]
+          else
+            date = 0
+          end
+          %>
+          <% if (date != 0) %>
+            <%= link_to image_tag("imdb_36x36.png" , {:title => 'IMDB Info', :alt => 'IMDB Info'}) + "IMDB Info",
+              "http://www.imdb.com/find?s=tt&q=#{dvd.title} (#{date})", :target =>'_blank', :canvas => false%>
+          <% end %>
+        </div>
+      </td>
+
+    </tr>
+    <tr><td>
+        <div align="center">
+          <%facebook_form_for @listing do |f| %>
+            <%= f.error_messages %>
+            <%= f.text_area :note, :label=>"Owner's note" %>
+            <fb:editor-buttonset>
+              <div align="center">
+                <fb:submit><%= image_tag("check_36x36.png", {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+                <%= link_to image_tag("cancel_36x36.png", {:title => 'cancel', :alt => 'cancel'}), listings_path %>
+              </div>
+            </fb:editor-buttonset>
+          <% end %>
+        </div>
+    </td></tr>
+  <% end %>
+
+</div>

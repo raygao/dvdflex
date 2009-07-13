@@ -1,0 +1,49 @@
+<h1> <%= fb_name @user, :possessive => false %> </h1> has  <%= @listings.size %> DVDs.
+
+<script>
+  function hidemycollection () {
+    document.getElementById('mycollection').setStyle({ display: 'none'});
+  }
+
+  function showmycollection () {
+    document.getElementById('mycollection').setStyle({ display: 'block'});
+  }
+
+  var hideMyCollection = true;
+
+  function toggleHideShow () {
+    if (hideMyCollection) {
+      hidemycollection ();
+      document.getElementById('hideOrshowMyCollection').setTextValue('Show Collection');
+    } else {
+      showmycollection();
+      document.getElementById('hideOrshowMyCollection').setTextValue('Hide Collection');
+    }
+    hideMyCollection = !hideMyCollection;
+  }
+</script>
+
+
+<% unless @listings.blank? %>
+  <a href="#" onclick="toggleHideShow()"><span id="hideOrshowMyCollection">Hide Collection</span></a>
+  <div id="mycollection">
+  <table>
+    <th>Title</th><th>Your Friend's Note</note>
+    <% for listing in @listings  %>
+      <tr>
+        <% dvd = Dvd.find(listing.dvd_id.to_s)  %>
+        <td width="150px">
+          <h4><%= dvd.title%> </h4>
+          <%= link_to "<img src='#{dvd.small_image}'>", edit_listing_path(listing.id) %>
+        </td>
+        <td><%=listing.note %></td>
+        <td>Borrow</td>
+      </tr>
+    <% end %>
+  </table>
+  </div>
+<%end%>
+<br/>
+
+
+<hr/>

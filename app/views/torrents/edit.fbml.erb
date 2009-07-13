@@ -1,0 +1,36 @@
+<h1>Editing torrent</h1>
+
+<% form_for(@torrent) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :dvd_id %><br />
+    <%= f.text_field :dvd_id %>
+  </p>
+  <p>
+    <%= f.label :torrent %><br />
+    <%= f.text_area :torrent %>
+  </p>
+  <p>
+    <%= f.label :link %><br />
+    <%= f.text_area :link %>
+  </p>
+  <p>
+    <%= f.label :size %><br />
+    <%= f.text_area :size %>
+  </p>
+  <p>
+    <%= f.label :category %><br />
+    <%= f.text_area :category %>
+  </p>
+  <p>
+    <%= f.label :pubdate %><br />
+    <%= f.text_area :pubdate %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @torrent %> |
+<%= link_to 'Back', torrents_path %>

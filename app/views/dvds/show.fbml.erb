@@ -1,0 +1,26 @@
+<p align="center">
+  <% if !@dvd.nil?%>
+    <h3><%= @dvd.title%> </h3><br/>
+    UPC code: <%= @dvd.upc %><br/>
+    <img src="<%= @dvd.medium_image%>"><br/>
+    <h3>Following People has it:</h3>
+    <% for listing in @listings %>
+      <%  user = User.find(listing.user_id.to_s) %>
+      <%if current_user == user%>
+        <%=  link_to("Edit my item", edit_listing_path(listing.id) )%><br/>
+      <%else%>
+        <%= link_to(fb_name(user.facebook_id, :capitalize=>true, :use_you=>false, :linked => false),
+          listing_path(listing.id))%><br/>
+      <%end%>
+    <% end %>
+  <% else %>
+    <%= link_to "Search that UPC code again", search_dvds_path%>
+  <% end %>
+</p>
+<br/>
+** DVD flex does not support pirating movies. Torrents are provided as backups
+in case that the DVD were accidentally scratched. Furthermore, DVDs are country coded.
+To facilitate learning foreign languages, it is often useful to hear the movie
+in the original language in stead of subtitles.
+
+Please buy an authentic movie, if you really like it.

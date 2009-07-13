@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+housefavorite:
+  id: 1
+  user_id: 1
+  dvd_id: 1
+  note: some random note about the first dvd.
+  status: 1
+
+guestfavorite:
+  id: 2
+  user_id: 2
+  dvd_id: 2
+  note: some random note about the second/last dvd.
+  status: 5

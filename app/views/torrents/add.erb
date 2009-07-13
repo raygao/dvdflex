@@ -1,0 +1,38 @@
+<h1>Contribute a torrent</h1>
+
+<% facebook_form_for(@torrent) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label "DVD title:" %><br />
+    <%= (Dvd.find(@torrent.dvd_id)).title %>
+    <%= f.hidden_field :dvd_id, :value => @torrent.dvd_id %>
+  </p>
+  <p>
+    <%= f.text_field :torrent %>
+  </p>
+  <p>
+    <%= f.text_field :link, :label =>"URL giving detailed description" %>
+  </p>
+  <p>
+    <%= f.text_field :size %>
+  </p>
+  <p>
+    <%= f.text_field :category %>
+  </p>
+  <p>
+    <%= f.text_field :pubdate %>
+  </p>
+  <p>
+    <fb:editor-buttonset>
+      <div align="center">
+        <fb:submit><%= image_tag("check_36x36.png", {:title => 'accept', :alt => 'accept'}) %></fb:submit>
+        <%= link_to image_tag("cancel_36x36.png", {:title => 'cancel', :alt => 'cancel'}), listings_path %>
+      </div>
+    </fb:editor-buttonset>
+  </p>
+<% end %>
+
+<%= link_to 'Back', listings_path %>
+
+

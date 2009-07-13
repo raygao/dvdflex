@@ -1,0 +1,185 @@
+<h1> <%= fb_name @user, :possessive => true %> DVD Listings </h1><br/>
+
+<script>
+
+  ////////////////////////////////////////////////
+  // toggle hide & show of my dvd listings      //
+  ////////////////////////////////////////////////
+  function divCollections () {
+     //var myDVDListingIsVisible = true;
+  }
+
+  // http://snook.ca/archives/javascript/javascript_pass/
+
+  var divCollec = new divCollections();
+
+  function hideCollection (divID) {
+    obj = document.getElementById(divID);
+    obj.setStyle({ display: 'none'});
+  }
+
+  function showCollection (divID) {
+    obj = document.getElementById(divID);
+    obj.setStyle({ display: 'block'});
+  }
+
+  //var myDVDListingIsVisible = true;
+
+  var DivVisibleBool = {'myDVDListingIsVisible': false};
+  ////////////////////////////////////
+  // div: the div to hide or show   //
+  // span: the link used to control //
+  // divIsVisibleBool: boolean control  //
+  ////////////////////////////////////
+  function toggleHideShow (spanID, divID, divIsVisibleBool) {
+    //if (divCollec.divIsVisible == null)
+    //  divCollec.divIsVisible = true;
+
+    //if the divbool is not defined and it is 'myDVDListingIsVisible', it is not
+    //already show, display it. otherwise, call the hide method.
+    if ((DivVisibleBool[divIsVisibleBool] == null) && divIsVisibleBool != 'myDVDListingIsVisible')
+      DivVisibleBool[divIsVisibleBool] = true;
+
+
+    if (DivVisibleBool[divIsVisibleBool]) {
+      hideCollection (divID);
+      document.getElementById(spanID).setTextValue('Show Collection');
+    } else {
+      showCollection(divID);
+      document.getElementById(spanID).setTextValue('Hide Collection');
+    }
+    DivVisibleBool[divIsVisibleBool] = !DivVisibleBool[divIsVisibleBool];
+
+    //debug statements below.
+    //document.getElementById('divName').setTextValue(divID);
+    //document.getElementById('SpanID').setTextValue(spanID);
+    //document.getElementById('divValue').setTextValue(divCollec.divIsVisibleBool);
+    //still has problem with initial double-click of the hiding friend's DVD list.
+  }
+</script>
+
+<!--
+Debug<br/>
+SpanID: <span id="SpanID">not defined.</span><br/>
+DIV ID: <span id="divName">not defined.</span><br/>
+divIsVisibleBool boolean:<span id="divValue">uninitialized</span><br/>
+-->
+
+<% unless @listings.blank? %>
+  you have  <%= @listings.size %> DVDs in your library.
+  <a href="##" onclick="toggleHideShow('hideOrshowMyCollection', 'mycollection', 'myDVDListingIsVisible')">
+    <span id="hideOrshowMyCollection">Show Collection</span>
+  </a>
+  <div id="mycollection" style="display:none">
+  <table width="600px">
+    <th>Title</th>
+    <th>Your Note</note>
+    <th>Edit</th>
+    <th>Delete</note>
+    <% for listing in @listings  %>
+      <tr>
+        <% dvd = Dvd.find(listing.dvd_id.to_s)  %>
+        <td width="150px">
+          <h4><%= dvd.title%> </h4>
+          <%= link_to "<img src='#{dvd.small_image}'>", edit_listing_path(listing.id) %>
+        </td>
+        <td><%=listing.note %></td>
+        <td><%= link_to image_tag("edit_36x36.png", {:title => 'edit', :alt => 'edit'}),
+          edit_listing_path(listing.id) %></td>
+        <td><%= link_to image_tag("delete_36x36.png", {:title => 'delete', :alt => 'delete'}),
+            listing_path(listing.id), :confirm => 'Are you sure about deleting this listing?', :method => :delete %>
+        </td>
+        <td><span id="delete_result"></span></td>
+      </tr>
+    <% end %>
+  </table>
+  </div>
+<%end%>
+<br/>
+
+
+<hr/>
+<span id="all_my_friends_listings">
+  <% unless @list_of_friends.blank? %>
+    <table width="600px">
+      <tr><th colspan="2"><h1> Your friends' DVD Listings </h1></th></tr>
+      <% for friend in @list_of_friends %>
+        <% listings_of_a_friend = Listing.find_for_a_friend(friend.to_s)%>
+        <% unless listings_of_a_friend.size == 0 %>
+
+          <tr>
+            <td colspan="2"><h3>
+              <%= link_to(fb_name(friend, :capitalize=>true, :use_you=>false, :linked => false),
+                showuser_listings_path + "/#{User.find_by_facebook_id(friend).id}" ) %>
+              has <%= listings_of_a_friend.size %> DVDs</h3>
+              &nbsp;&nbsp;
+              <a href="#" onclick="toggleHideShow('hideOrshow_<%= friend %>', 'friendcollection_<%= friend %>', 'var_<%= friend %>')">
+                <span id="hideOrshow_<%= friend %>">Hide Collection</span>
+              </a>
+            </td>
+          </tr>
+          <tr><td>
+            <div id="friendcollection_<%= friend %>" style="display:block">
+            <table>
+              <tr>
+                <th width="10%">Title</th>
+                <th width="50%">Your Friend's note</th>
+                <th width="10%">Torrents</th>
+                <th width="10%">Video on Demand</th>
+                <th width="10%">IMDB listing</th>
+                <th width="10%">Email friend</th>
+              </tr>
+              <% for listing in listings_of_a_friend %>
+                <tr>
+                  <% dvd = Dvd.find(listing.dvd_id) %>
+                  <td width="150px">
+                    <h4><%= dvd.title%> </h4>
+                    <%= link_to "<img src='#{dvd.small_image}' title='view details of #{dvd.title}'>", listing_path(listing.id) %>
+                  </td>
+                  <td><%=listing.note %></td>
+                  <td>
+                  <% if (dvd.torrents.size > 0)  %>
+                      <div align="center">
+                          <a href="<%= show_dvd_torrent_url(dvd.id)%> ">
+                            <%= image_tag("torrent_36x36.png" , {:title => 'View torrent listings', :alt => 'View torrent listings'}) %><br/>
+                          </a>
+                      </div>
+                  <% end %>                    
+                  </td>
+                  <td>
+                    <% if !dvd.vod.nil? %>
+                        <div align="center">
+                          <a href="<%=dvd.vod%>" target ='_blank'>
+                            <%= image_tag("vod_36x36.png" , {:title => 'Watch it with Video on Demand', :alt => 'Watch it with Video on Demand'}) %><br/>
+                          </a>
+                        </div>
+                    <% end %>             
+                  </td>
+                  <td>
+                    <% if !dvd.theatrical_release_date.nil?
+                        d = dvd.theatrical_release_date.split("-")
+                        date = d[0]
+                    else
+                      date = 0
+                    end
+                    %>
+                    <% if (date != 0) %>
+                      <%= link_to image_tag("imdb_36x36.png" , {:title => 'IMDB Detail', :alt => 'IMDB Detail'}),
+                          "http://www.imdb.com/find?s=tt&q=#{dvd.title} (#{date})", :canvas=>false%>
+                    <%end%>
+                  </td>
+                  <td>                      
+                      <%= link_to image_tag("email_36x36.png" , {:title => 'email friend', :alt => 'email friend'}),
+                        "http://www.facebook.com/message.php?id=#{listing.user.facebook_id}&subject=Borrowing DVD: #{dvd.title}&msg=Can I borrow DVD: '#{dvd.title}' from you? %0A%0AThanks alot!", :target=>"_blank"%>
+                  </td>
+                </tr>
+              <% end %>
+            </table>
+            </div>
+          </td></tr>
+          <tr><td><hr/></td></tr>
+        <% end %>
+      <% end %>
+    </table>
+  <% end %>
+</span>

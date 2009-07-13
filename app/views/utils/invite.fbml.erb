@@ -1,0 +1,16 @@
+<fb:fbml>
+  <fb:add-section-button section="profile"/>
+  <fb:request-form
+   action="<%=confirmed_utils_path%>"
+   method="POST"
+   invite="true"
+   type="DVD Flex"
+   content="I added a cool Movie-sharing application. 
+      <%=h "<fb:req-choice url=\"#{welcome_utils_url(:from=>@from_user_id, :canvas=>true)}\"
+      label=\"Try DVD Flex!\" />
+      "%>"
+    <fb:multi-friend-selector
+      showborder="true"
+      actiontext="Invite your friends to use DVD Flex and begin sharing." />
+  </fb:request-form>
+</fb:fbml>

@@ -1,0 +1,49 @@
+<h1>Listing torrents</h1>
+
+<table width="600px">
+  <tr>
+    <th width="25%">Dvd Name</th>
+    <th width="15%">Download Torrent</th>
+    <th width="17%">Torrent's Detailed Information</th>
+    <th width="15%">File Size</th>
+    <th width="15%">Category</th>
+    <th width="15%">Publish Date</th>
+  </tr>
+
+  <% unless @torrents.nil? %>
+    <% @torrents.each do |torrent| %>
+      <tr>
+        <td><%=h (Dvd.find_by_id(torrent.dvd_id.to_s)).title %></td>
+
+        <td>
+          <a href="<%=h torrent.torrent %>">
+            <%= image_tag("torrent_36x36.png", {:title => 'Download', :alt => 'Download'})%><br/>
+            Download Now
+          </a>
+        </td>
+        <td><a href="<%=h torrent.link %>">More Detail</a></td>
+        <td><%=h torrent.size %></td>
+        <td><%=h torrent.category %></td>
+        <td><%=h torrent.pubdate %></td>
+      </tr>
+    <% end %>
+  <% end %>
+</table>
+
+<br />
+
+<%= link_to 'Contribute a torrent link', add_torrent_path(@dvd_id) %>
+<br/>
+** DVD flex does not support pirating movies. Torrents are provided as backups
+in case that the DVD were accidentally scratched. Furthermore, DVDs are country coded.
+To facilitate learning foreign languages, it is often useful to hear the movie
+in the original language instead of viewing subtitles.
+
+Please buy an authentic movie, if you really like it.<br/>
+
+Here are some applications for opening Torrent files and downloading medias.
+<ul>
+  <li><a href="http://www.vuze.com/Download.html" target="_blank">http://www.vuze.com/Download.html</a></li>
+  <li><a href="http://www.bittorrent.com/" target="_blank">http://www.bittorrent.com/</a></li>
+  <li><a href="http://www.utorrent.com/" target="_blank">http://www.utorrent.com/</a></li>
+</ul>

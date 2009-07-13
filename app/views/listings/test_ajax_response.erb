@@ -1,0 +1,16 @@
+URL -> http://www.are4.us/test_ajax.php?t=x
+x:
+  0: RAW
+  1: JSON
+  2: FBML
+
+<?php
+$user = isset($_POST['fb_sig_user']) ? $_POST['fb_sig_user'] : null;
+ if ($_GET['t'] == 0) { // Ajax.RAW
+   echo 'This is a raw string. The current time is: '.date('r').', and you are '.($user ? 'uid: #'.$user : 'anonymous').'.';
+} else if ($_GET['t'] == 1) { // Ajax.JSON
+   echo '{"message": "This is a JSON object.", "time": "'.date('r').'", "fbml_test": "Hello, '.($user ? '<fb:name uid='.$user.' useyou=false />' : 'anonymous').'."}';
+ } else if ($_GET['t'] == 2) { // Ajax.FBML
+   echo 'This is an FBML string. The current time is: '.date('r').', and you are '.($user ? '<fb:name uid='.$user.' useyou=false />' : 'anonymous').'.';
+}
+?>

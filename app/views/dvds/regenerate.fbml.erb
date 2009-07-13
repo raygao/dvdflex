@@ -1,0 +1,41 @@
+<%= "refresh_all.fbml" %><br/>
+
+<% @dvds.each do |dvd|
+  dvd_upc = dvd.upc
+  locale = (Country.find(dvd.country_id)).code ? (Country.find(dvd.country_id)).code : "us"
+
+  amazon_helper = Amazon_Helper.new
+  dvd_updated = amazon_helper.find_dvd_in_amazon_by_upcode(dvd_upc, locale)
+  new_dvd_attrs = dvd_updated.attributes
+%>
+  <% if dvd.update_attributes(new_dvd_attrs)
+  %>
+    <%= dvd.id %>, <%= dvd.title %> has been successfully updated
+
+    <%
+    if (!dvd.id.nil?)
+      Torrent.destroy_all(:dvd_id => dvd.id)
+      puts "Torrents with DVD ID: #{dvd.id} has been deleted."
+    end
+
+    isohelper = Iso_Lookup.new
+    torrents = isohelper.getTorrents(dvd.title, 'Video/Movies')
+
+    if (!torrents.nil?)
+      torrents.each do |t|
+        t['dvd_id'] = dvd.id
+        tt = Torrent.new(t)
+        if tt.save
+          puts tt.torrent + " has been saved."
+        else
+          puts "There has been an error in saving " + tt.torrent
+        end
+      end
+    end
+  %>
+
+    <br/>
+  <% else %>
+    <%= dvd.id %>, <%= dvd.title %> failed to update <br/>
+  <% end %>
+<% end %>

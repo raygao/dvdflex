@@ -1,0 +1,16 @@
+I am using dvdflex_test. I have:
+<fb:wide>
+  <h1>I'm wide</h1>
+</fb:wide>
+
+<fb:narrow>
+  <h1>I'm narrow</h1>
+</fb:narrow>
+<ul>
+  <% for listing in @user.listings %>
+    <%dvd = Dvd.find(listing.dvd_id)%>
+    <li><%= link_to(dvd.title, "http://apps.facebook.com/dvdflex_test" + listing_path(listing.id)) %></li>
+  <% end %>
+</ul>
+
+<!-- now there is only wide or narrow -->

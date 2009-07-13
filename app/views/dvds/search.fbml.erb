@@ -1,0 +1,77 @@
+<!--renamed to preprocess-->
+
+Searching for a DVD:
+<%unless @dvd.nil?%>
+  <%facebook_form_for @dvd, :url => search_dvds_path do |f|%>
+    <%= f.error_messages %>
+    <%= f.text_field :title, :label => "Title" %>
+    <div align="center">
+      <fb:editor-custom >
+        Also seach in Amazon's Video-on-Demand: <INPUT TYPE=CHECKBOX NAME="amazon" CHECKED="true">
+      </fb:editor-custom>
+    </div>
+    <%= f.buttons "Search" %>
+  <% end %>
+<% end %>
+
+
+<%unless @results.nil?%>
+  <% for dvd in @results  %>
+    <table width="600px">
+      <tr>
+        <td>
+          <h3><%= dvd.title%> </h3><br/>
+          UPC code: <%= dvd.upc %><br/>
+          <img src="<%= dvd.small_image%>"><br/>
+          <h2><%= link_to "Who has it?", dvd_path(dvd.id) %></h2>
+        </td>
+        <td>
+          Running Time: <%=  dvd.running_time %> minutes<br/>
+          Release Date: <%=  dvd.dvd_release_date %><br/>
+          Director: <%=  dvd.director %><br/>
+        </td>
+        <td>
+          <% if (dvd.torrents.size > 0)  %>
+            <div align="center">
+              <a href="<%= show_dvd_torrent_url(dvd.id)%> " target ='_blank'>
+                <%= image_tag("torrent_36x36.png" , {:title => 'View torrent listings', :alt => 'View torrent listings'}) %><br/>
+              </a>
+            </div>
+          <% end %>
+        </td>
+        <td>
+          <% if !dvd.vod.nil? %>
+            <div align="center">
+              <a href="<%=dvd.vod%>" target ='_blank'>
+                <%= image_tag("vod_36x36.png" , {:title => 'Watch it with Video on Demand', :alt => 'Watch it with Video on Demand'}) %><br/>
+              </a>
+            </div>
+          <% end %>
+        </td>
+      </tr>
+    </table>
+  <% end %>
+<% end %>
+
+<% unless @amazon_vods.nil? %>
+  <hr/>
+  <table>
+    <h2> Amazon Video on Demand Results:</h2>
+    <% for vod in @amazon_vods  %>
+      <tr>
+        <td>
+          <a href="<%= vod.vodurl %>" target ='_blank'>
+            <img src="<%=  vod.small_image %>"><br/>
+            <%= vod.title %>
+          </a>
+        </td>
+        <td>
+          Running Time: <%=  vod.running_time %> minutes<br/>
+          Release Date: <%=  vod.dvd_release_date %><br/>
+          Director: <%=  vod.director %><br/>
+          Lowest Price: <%=  vod.lowest_price %><br/>
+        </td>
+      </tr>
+    <%end%>
+  </table>
+<% end %>

@@ -1,0 +1,16 @@
+
+<% if !@dvd.nil?%>
+  <div align="center">
+    <h3><%= @dvd.title%> </h3><br/>
+    UPC code: <%= @dvd.upc %><br/>
+    <img src="<%= @dvd.medium_image%>"><br/>
+    <% if !@dvd.description.nil? %>
+      <h3>Description: </h3> <%= @dvd.description %><br/>
+    <% end %>
+
+    <br/>
+    <h1><%= link_to "ADD", new_listing_path + "?dvd_id=#{@dvd.id}" %></h1>
+<% else %>
+    <%= link_to "Search that UPC code again", new_dvd_path%>
+  </div>
+<% end %>

@@ -1,0 +1,6 @@
+  key_id =  'your amazon webservice key'
+  secret_key_id = 'your amazon webservices secret key'
+  associate = 'Your amazon associate account id'
+  cache = false
+  locale = 'us'
+  encoding = 'iso-8859-15'

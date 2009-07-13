@@ -1,0 +1,13 @@
+<%facebook_form_for @listing do |f| %>
+    <div align="center">
+      <% dvd = Dvd.find(@dvd_id)  %>
+      <fb:editor-custom >
+        <img src="<%= dvd.medium_image %>"><br/>
+        <h2><%= dvd.title %></h2>
+      </fb:editor-custom>
+    </div>
+  <%= f.text_area :note, :label => "Your Note" %>
+  <%= f.buttons "Add DVD" %>
+
+  <%= f.hidden_field :dvd_id, :value => @dvd_id %>
+<% end %>

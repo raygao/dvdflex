@@ -1,0 +1,24 @@
+<h2>Add to my DVD library</h2>
+
+<%unless @dvd.nil?%>
+  <%facebook_form_for @dvd, :url => preprocess_dvds_path do |f|%>
+    <%= f.error_messages %>
+    <%= f.text_field :upc, :label => "UPC Code" %>
+    
+    <%=
+    @country = Country.find(:all).collect {|u| [u.description, u.code] }
+    f.select(:country_id, @country)
+    %>
+  
+    <!-- Default to USA, otherwise @country = Country.find(:all, :order => "code").collect {|u| [u.description, u.code] } -->
+
+    <%= f.buttons "ADD" %>
+    <%= f.label "Please make sure that you have selected the correct region of your DVD." %>
+  <% end %>
+<%  end %>
+<br/>
+<div align="center">
+  Example:<br/>
+  <%= image_tag("upc_code.jpg", {:title => 'cancel', :alt => 'cancel'}) %><br/>
+  The UPC code in this example is: 031398207481
+</div>

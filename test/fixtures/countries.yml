@@ -1,0 +1,31 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+us:
+  id: 1
+  code: us
+  description: USA
+
+jp:
+  id: 2
+  code: jp
+  description: Japan
+
+de:
+  id: 3
+  code: de
+  description: Germany
+
+uk:
+  id: 4
+  code: uk
+  description: United Kingdom
+
+fr:
+  id: 5
+  code: fr
+  description: France
+
+ca:
+  id: 6
+  code: ca
+  description: Canada

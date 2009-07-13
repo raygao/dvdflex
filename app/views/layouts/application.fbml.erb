@@ -1,0 +1,35 @@
+<br/>
+<%= javascript_include_tag 'facebooker' %>
+<!--%= javascript_include_tag :defaults %-->
+<center><%= fb_add_profile_section %></center>
+
+<!--this does not work in firefox-->
+
+<% rq_uri = self.request.path
+
+current_tab = case rq_uri
+  when "/listings", "/" then "home"
+  when "/dvds/new", "/dvds/preprocess", "/listings/new" then "add_item"
+  when "/dvds/search" then "search"
+  when "/utils/export" then "export"
+  when "/utils/invite" then "invite"
+  when "/utils/news" then "news"
+  else "none"
+end
+%>
+
+<br/>
+
+<%= facebook_messages %>
+<% fb_tabs do %>
+  <%= fb_tab_item "Home", listings_path, :selected=> (current_tab == "home"), :align =>'left' %>
+  <%= fb_tab_item "Add To My Library", new_dvd_path, {:selected=>( current_tab =='add_item'), :align => 'left'}%>
+  <%= fb_tab_item "Search", search_dvds_path, {:selected=>( current_tab == "search"), :align => 'left'}%>
+  <%= fb_tab_item "Export", export_utils_path, {:selected=>( current_tab == "export"), :align => 'left'}%>
+  <%= fb_tab_item "Invite Friends", invite_utils_path, {:selected=>( current_tab == "invite"), :align => 'left'}%>
+  <%= fb_tab_item "news", news_utils_path, {:selected=>( current_tab == "news"), :align => 'left'}%>
+<%end%>
+<br/>
+
+<%= yield %>
+

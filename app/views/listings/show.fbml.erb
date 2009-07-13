@@ -1,0 +1,98 @@
+<!-- show detail of a particular dvd listing. -->
+
+<% unless @listing.blank? %>
+  <div align="center">
+  <h4><i>DVD detailed information</i></h4>
+  <% @dvd = Dvd.find(@listing.dvd_id.to_s)  %>
+  <table width="400px">
+  <tr align="center">
+    <div align="center">
+      <td colspan="2" align="center">
+      <h1><div align="center"><%= @dvd.title%></div></h1>
+    </div>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" align="center" valign="top">
+      <div align="center">
+        <a href="<%= @dvd.pageurl%>">
+          <img src="<%= @dvd.medium_image %>"><br/>
+          DVD's detail information on Amazon.
+        </a>
+      </div>
+    </td>
+  </tr>
+  <% if !@dvd.vod.nil? %>
+    <tr><td colspan="2" align="center" valign="top">
+        <div align="center">or<br/>
+          <%= link_to image_tag("vod_36x36.png" , {:title => 'Video on Demand', :alt => 'Video on Demand'}) + "Video on Demand",
+            @dvd.vod, :target=>"_blank" %>
+          </a>
+        </div>
+    </td></tr>
+  <% end %>
+  <% torrents=Torrent.find_by_dvd_id(@dvd.id)
+  if !torrents.nil? %>
+    <tr><td colspan="2" align="center" valign="top">
+        <div align="center">
+          <%= link_to image_tag("torrent_36x36.png" , {:title => 'Torrent listings', :alt => 'Torrent listings'}) + "Torrent listings",
+            show_dvd_torrent_url(@dvd.id) %>
+          </a>
+        </div>
+    </td></tr>
+  <% end %>
+  <!--# URL TO IMDB is not kept in the database. Rather, it is constructed dynamically.-->
+  <% if !@dvd.theatrical_release_date.nil?
+    d = @dvd.theatrical_release_date.split("-")
+    date = d[0]
+  else
+    date = 0
+  end
+%>
+  <% if (date != 0) %>
+    <tr><td colspan="2" align="center" valign="top">
+        <div align="center">
+          <%= link_to image_tag("imdb_36x36.png" , {:title => 'IMDB Info', :alt => 'IMDB Info'}) + "IMDB Info",
+            "http://www.imdb.com/find?s=tt&q=#{@dvd.title} (#{date})", :target =>'_blank', :canvas=>false%>
+        </div>
+    </td></tr>
+  <%end%>
+    <tr><td colspan="2" align="center" valign="top">
+        <div align="center">
+          <%= link_to image_tag("email_36x36.png" , {:title => 'email friend', :alt => 'email friend'}) + "email your friend",
+            "http://www.facebook.com/message.php?id=#{@listing.user.facebook_id}&subject=Borrowing DVD: #{@listing.dvd.title}&msg=Can I borrow DVD: '#{@listing.dvd.title}' from you?  Thanks alot!", :target=>"_blank"%>
+        </div>
+  </td></tr>
+  <!-- Additional Information -->
+  <% if !@dvd.description.nil? %>
+    <tr><td width ="125" valign="top"><h3>Description: </h3> </td> <td width="375" valign="top"><%= @dvd.description %></td></tr>
+  <% end %>
+  <% if !@dvd.running_time.nil? %>
+    <tr><td valign="top"><h3>Running Time: </h3></td><td><%= @dvd.running_time %> minutes</td></tr>
+  <% end %>
+  <% if !@dvd.director.nil? %>
+    <tr><td valign="top"><h3>Director: </h3></td><td valign="top"> <%= @dvd.director %></td></tr>
+  <% end %>
+  <% if !@dvd.actors.nil? %>
+    <tr><td valign="top"><h3>Actors: </h3></td><td valign="top"><%= @dvd.actors %></td></tr>
+  <% end %>
+  <tr><td colspan="2" align="center">
+      <div align="center">
+        <%
+        user = User.find(@listing.user_id)
+      %>
+        <%= link_to(fb_name(user.facebook_id, :capitalize=>true, :use_you=>false, :linked => false),
+          showuser_listings_path + "/ #{user.id}" )%>'s Note:
+        <br/>
+        <br/>
+        <textarea rows="5" cols="40" disabled="true">
+  <%=@listing.note %>
+        </textarea>
+        <br/>
+        <%= link_to image_tag("undo_36x36.png", {:title => 'go back', :alt => 'go back'}), listings_path %>
+      </div>
+  </td></tr>
+  </table>
+  </div>
+<% end %>
+

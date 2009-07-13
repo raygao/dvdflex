@@ -1,0 +1,15 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+house:
+  id: 1
+  upc: 085393894528
+  title: House of Wax
+  medium_image: http://ecx.images-amazon.com/images/I/51QH23D2VML._SL160_.jpg
+  small_image: http://ecx.images-amazon.com/images/I/51QH23D2VML._SL75_.jpg
+
+dance:
+  id: 2
+  upc: 043396239494
+  title: Dance with Me
+  medium_image: http://ecx.images-amazon.com/images/I/51imL8XXgLL._SL160_.jpg
+  small_image: http://ecx.images-amazon.com/images/I/51imL8XXgLL._SL75_.jpg
