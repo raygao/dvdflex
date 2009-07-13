@@ -1,0 +1,103 @@
+== Welcome to DVD Flex ==
+
+DVD is a Facebook Application. It is written using RubyonRails. It is dependent
+on the followings:
+
+Platform:
+    Ruby 1.8.7
+    Rails 2.2.2
+
+Gems: (gem install *)
+    MYSQL 2.7 drivers
+    Mongrel
+    Ruby-AAWS 0.7
+    JSON
+    IMDB 0.3
+    HTTParty
+    Facebooker
+    Net-ssh
+    Facebooker Authentication
+    Tunnlr
+    JRails
+    Excel
+
+Because I used NetBeans IDE as my development environment, you can easily open
+up the project with that IDE. However, NetBeans has a bug in the debug mode. The
+bug is related to OpenSSL and hashing. As a result, when you run the application
+from within the NetBeans in the debug mode and try to add an item using UPC code,
+Ruby-AAWS will complain.
+
+The correct way to test the application is to run it in the command prompt with:
+% script/server
+
+Additionally, you will need to update following configuratiaon files:
+1. facebooker.yml - Facebook Application Key and Application Secret.
+2. Database.yml - Database connection setting for DVD Flex application.
+3. Tunnlr.yml - If you wish to use Tunnlr service.
+4. environment/development, production, and test - for Amazon Product Advertisting
+API's associates and secret ID.
+5. .amzonrc file in the root of the folder, used by the ruby-aaws, should match
+development.rb, production.rb, or test.rb.
+
+Additionally, if you wish to run the application in a cluster environment with
+Mongrel/Pound configuration, the following setting can be used.
+
+Pound.cfg:
+================================================================================
+ListenHTTP
+	Address IP-address of the server
+	Port	8888
+
+	## allow PUT and DELETE also (by default only GET, POST and HEAD)?:
+	xHTTP		0
+
+	Service
+		BackEnd
+			Address	127.0.0.1
+			Port	8000
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8001
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8002
+		End
+		BackEnd
+			Address	127.0.0.1
+			Port	8003
+		End
+	End
+End
+================================================================================
+
+mongrel_cluster.yml: (% mongrel_rails cluster::start)
+================================================================================
+---
+group: dvdflex
+log_file: log/mongrel.log
+port: "8000"
+cwd: /home/dvdflex/dvdflex
+environment: production
+user: dvdflex
+pid_file: tmp/pids/mongrel.pid
+servers: 4
+================================================================================
+
+On the Facebook application set up, following must be used.
+1. Authentication/Post-Authorize Callback URL -  http://IP:8888/listings
+2. Authentication/Post-Remove Callback URL -  http://IP:8888/utils/post_remove
+3. Canvas/Canvas Callback URL - http://IP:8888/
+4. Canvas/Post-Authorize Redirect URL - http://IP:8888 (without the trailing slash)
+5. Canvas/Canvas Settings/Render Method - FBML
+
+================================================================================
+
+License - See apache2_license.txt.
+1. You are free to redistribute, reuse any or all part of my code without cost,
+provided that you acknowledge the original code came from me.
+2. The license file is maintained with the project.
+3. No warranty of any kind is provided except under direct agreement with me.
+
+Release date: July 13, 2009
