@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Dvdflex by raygao</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Dvdflex</h1>
+        <h2>A cool to share DVD on Facebook, using Amazon ECS and Netflix</h2>
+        <a href="https://github.com/raygao/dvdflex" class="button"><small>View project on</small>GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <p>== Welcome to DVD Flex ==</p>
+
+<p>DVD is a Facebook Application. It is written using RubyonRails. It is dependent
+on the followings:</p>
+
+<p>Platform:
+    Ruby 1.8.7
+    Rails 2.2.2</p>
+
+<p>Gems: (gem install *)
+    MYSQL 2.7 drivers
+    Mongrel
+    Ruby-AAWS 0.7
+    JSON
+    IMDB 0.3
+    HTTParty
+    Facebooker
+    Net-ssh
+    Facebooker Authentication
+    Tunnlr
+    JRails
+    Excel</p>
+
+<p>Because I used NetBeans IDE as my development environment, you can easily open
+up the project with that IDE. However, NetBeans has a bug in the debug mode. The
+bug is related to OpenSSL and hashing. As a result, when you run the application
+from within the NetBeans in the debug mode and try to add an item using UPC code,
+Ruby-AAWS will complain.</p>
+
+<p>The correct way to test the application is to run it in the command prompt with:
+% script/server</p>
+
+<p>Additionally, you will need to update following configuratiaon files:
+1. facebooker.yml - Facebook Application Key and Application Secret.
+2. Database.yml - Database connection setting for DVD Flex application.
+3. Tunnlr.yml - If you wish to use Tunnlr service.
+4. environment/development, production, and test - for Amazon Product Advertisting
+API's associates and secret ID.
+5. .amzonrc file in the root of the folder, used by the ruby-aaws, should match
+development.rb, production.rb, or test.rb.</p>
+
+<p>Additionally, if you wish to run the application in a cluster environment with
+Mongrel/Pound configuration, the following setting can be used.</p>
+
+<h1>Pound.cfg:</h1>
+
+<p>ListenHTTP
+    Address IP-address of the server
+    Port    8888</p>
+
+<pre><code>## allow PUT and DELETE also (by default only GET, POST and HEAD)?:
+xHTTP       0
+
+Service
+    BackEnd
+        Address 127.0.0.1
+        Port    8000
+    End
+    BackEnd
+        Address 127.0.0.1
+        Port    8001
+    End
+    BackEnd
+        Address 127.0.0.1
+        Port    8002
+    End
+    BackEnd
+        Address 127.0.0.1
+        Port    8003
+    End
+End
+</code></pre>
+
+<h1>End</h1>
+
+<h1>mongrel_cluster.yml: (% mongrel_rails cluster::start)</h1>
+
+<hr><p>group: dvdflex
+log_file: log/mongrel.log
+port: "8000"
+cwd: /home/dvdflex/dvdflex
+environment: production
+user: dvdflex
+pid_file: tmp/pids/mongrel.pid</p>
+
+<h1>servers: 4</h1>
+
+<p>On the Facebook application set up, following must be used.
+1. Authentication/Post-Authorize Callback URL -  http://IP:8888/listings
+2. Authentication/Post-Remove Callback URL -  http://IP:8888/utils/post_remove
+3. Canvas/Canvas Callback URL - http://IP:8888/
+4. Canvas/Post-Authorize Redirect URL - http://IP:8888 (without the trailing slash)
+5. Canvas/Canvas Settings/Render Method - FBML</p>
+
+<h1></h1>
+
+<p>License - See apache2_license.txt.
+1. You are free to redistribute, reuse any or all part of my code without cost,
+provided that you acknowledge the original code came from me.
+2. The license file is maintained with the project.
+3. No warranty of any kind is provided except under direct agreement with me.</p>
+
+<p>Release date: July 13, 2009</p>
+
+<h1></h1>
+
+<p>Source Code:
+<a href="http://github.com/raygao/dvdflex/tree/master"></a><a href="http://github.com/raygao/dvdflex/tree/master">http://github.com/raygao/dvdflex/tree/master</a></p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/raygao/dvdflex/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/raygao/dvdflex/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/raygao/dvdflex"></a> is maintained by <a href="https://github.com/raygao">raygao</a>.</p>
+
+          <p>This page was generated by <a href="pages.github.com">GitHub Pages</a> using the Architect theme by <a href="http://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
